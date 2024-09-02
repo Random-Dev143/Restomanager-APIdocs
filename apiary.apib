@@ -1,0 +1,242 @@
+FORMAT: 1A
+HOST: URL Pythonanywhere
+
+# RestoManager
+
+Polls is a simple API allowing consumers to view polls and vote in them.
+
+FORMAT: 1A
+HOST: http://api.restaurante.com
+
+# API de Gestión de Pedidos del Restaurante
+
+Esta API permite gestionar el menú de un restaurante, incluyendo la creación, actualización, y consulta de productos del menú y sus agregados.
+
+# Group Menú
+
+## Menú Collection [/menu]
+
+### Obtener Todos los Productos del Menú y sus agregados[GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "producto": "Pizza Margherita",
+                    "precio": 8.99,
+                    "descripcion": "Tomato, mozzarella, and basil.",
+                    "categoria": "Pizza",
+                    "agregados": [
+                        {
+                            "id": 1,
+                            "id_menu": 1,
+                            "nombre": "Extra Cheese",
+                            "precio": 1.50,
+                            "descripcion": "Extra mozzarella cheese."
+                        },
+                        {
+                            "id": 2,
+                            "id_menu": 1,
+                            "nombre": "Olives",
+                            "precio": 0.75,
+                            "descripcion": "Fresh olives."
+                        }
+                    ]
+                }
+            ]
+
+### Crear un Nuevo Producto en el Menú y sus agregados[POST]
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "producto": "Pizza Pepperoni",
+                "precio": 10.99,
+                "descripcion": "Pepperoni, mozzarella, and tomato sauce.",
+                "categoria": "Pizza",
+                "agregados": [
+                    {
+                        "nombre": "Extra Cheese",
+                        "precio": 1.50,
+                        "descripcion": "Extra mozzarella cheese."
+                    },
+                    {
+                        "nombre": "Mushrooms",
+                        "precio": 0.75,
+                        "descripcion": "Fresh mushrooms."
+                    }
+                ]
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "id": 2,
+                "producto": "Pizza Pepperoni",
+                "precio": 10.99,
+                "descripcion": "Pepperoni, mozzarella, and tomato sauce.",
+                "categoria": "Pizza",
+                "agregados": [
+                    {
+                        "id": 5,
+                        "id_menu": 2,
+                        "nombre": "Extra Cheese",
+                        "precio": 1.50,
+                        "descripcion": "Extra mozzarella cheese."
+                    },
+                    {
+                        "id": 6,
+                        "id_menu": 2,
+                        "nombre": "Mushrooms",
+                        "precio": 0.75,
+                        "descripcion": "Fresh mushrooms."
+                    }
+                ]
+            }
+
+## Menú Item [/menu/{id}]
+
+### Obtener un Producto y agregados del Menú por ID [GET]
+
++ Parameters
+    + id: `1` (number, required) - El ID del producto del menú que se desea consultar.
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "id": 1,
+                "producto": "Pizza Margherita",
+                "precio": 8.99,
+                "descripcion": "Tomato, mozzarella, and basil.",
+                "categoria": "Pizza",
+                "agregados": [
+                    {
+                        "id": 1,
+                        "id_menu": 1,
+                        "nombre": "Extra Cheese",
+                        "precio": 1.50,
+                        "descripcion": "Extra mozzarella cheese."
+                    },
+                    {
+                        "id": 2,
+                        "id_menu": 1,
+                        "nombre": "Olives",
+                        "precio": 0.75,
+                        "descripcion": "Fresh olives."
+                    }
+                ]
+            }
+
+### Actualizar un Producto o agregado del Menú [PUT]
+
++ Parameters
+    + id: `1` (number, required) - El ID del producto del menú que se desea actualizar.
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "producto": "Pizza Margherita",
+                "precio": 9.99,
+                "descripcion": "Tomato, mozzarella, and basil.",
+                "categoria": "Pizza",
+                "agregados": [
+                    {
+                        "nombre": "Extra Cheese",
+                        "precio": 1.50,
+                        "descripcion": "Extra mozzarella cheese."
+                    },
+                    {
+                        "nombre": "Olives",
+                        "precio": 0.75,
+                        "descripcion": "Fresh olives."
+                    }
+                ]
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "id": 1,
+                "producto": "Pizza Margherita",
+                "precio": 9.99,
+                "descripcion": "Tomato, mozzarella, and basil.",
+                "categoria": "Pizza",
+                "agregados": [
+                    {
+                        "id": 3,
+                        "id_menu": 1,
+                        "nombre": "Extra Cheese",
+                        "precio": 1.50,
+                        "descripcion": "Extra mozzarella cheese."
+                    },
+                    {
+                        "id": 4,
+                        "id_menu": 1,
+                        "nombre": "Olives",
+                        "precio": 0.75,
+                        "descripcion": "Fresh olives."
+                    }
+                ]
+            }
+
+### Eliminar un Producto del Menú [DELETE]
+
++ Parameters
+    + id: `1` (number, required) - El ID del producto del menú que se desea eliminar.
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "message": "Producto y agregados eliminados"
+            }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Producto no encontrado"
+            }
+            
+            
+# Group Pedidos
+
+## Pedidos Collection [/pedidos]
+
+### Crear un Pedido [PUT]
+
+Este endpoint permite crear un pedido para un producto y sus agregados. Se creará un registro por cada agregado, además del registro principal del producto.
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "id_menu": 1,
+                "id_mesa": 5,
+                "agregados": [1, 2],
+                "cantidad": 2
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "message": "Pedido creado con éxito"
+            }
