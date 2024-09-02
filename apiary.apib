@@ -17,6 +17,7 @@ Esta API permite gestionar el menú de un restaurante, incluyendo la creación, 
 ## Menú Collection [/menu]
 
 ### Obtener Todos los Productos del Menú y sus agregados[GET]
+Este endpoint está pensado para obtener los productos del menú y sus agregados. Responde con un JSON listando productos y sus agregados.
 
 + Response 200 (application/json)
 
@@ -49,7 +50,7 @@ Esta API permite gestionar el menú de un restaurante, incluyendo la creación, 
             ]
 
 ### Crear un Nuevo Producto en el Menú y sus agregados[POST]
-
+Este endpoint esta pensado para que el adminstrador pueda cargar nuevos platos y sus agregados al menú. Admite platos sin agregados.
 + Request (application/json)
 
     + Body
@@ -104,6 +105,7 @@ Esta API permite gestionar el menú de un restaurante, incluyendo la creación, 
 ## Menú Item [/menu/{id}]
 
 ### Obtener un Producto y agregados del Menú por ID [GET]
+Este endpoint esta pensado para que el administrador pueda ver un plato en particular y sus agregados, luego podría modificar los campos del mismo.
 
 + Parameters
     + id: `1` (number, required) - El ID del producto del menú que se desea consultar.
@@ -137,7 +139,7 @@ Esta API permite gestionar el menú de un restaurante, incluyendo la creación, 
             }
 
 ### Actualizar un Producto o agregado del Menú [PUT]
-
+Este endpoint esta pensado para modificar un producto del menú. Admite cambios en el producto o sus agregados.
 + Parameters
     + id: `1` (number, required) - El ID del producto del menú que se desea actualizar.
 
@@ -193,7 +195,7 @@ Esta API permite gestionar el menú de un restaurante, incluyendo la creación, 
             }
 
 ### Eliminar un Producto del Menú [DELETE]
-
+Este endpoint sirve para eliminar el producto con sus agregados. Existirá otro endpoint para eliminar solo agregados.
 + Parameters
     + id: `1` (number, required) - El ID del producto del menú que se desea eliminar.
 
