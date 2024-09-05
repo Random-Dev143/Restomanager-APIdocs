@@ -299,3 +299,46 @@ Esta API permite gestionar el menú de un restaurante, incluyendo la creación, 
                     "url": "http://example.com/image.jpg"
                 }
             ]
+            
+## Autenticación [/auth]
+
+### Registrar Usuario [POST /auth/register]
+
++ Request (application/json)
+    + Attributes
+        + nombre: "John Doe" (string) - Nombre del usuario.
+        + email: "johndoe@email.com" (string) - Correo electrónico del usuario.
+        + password: "mypassword123" (string) - Contraseña del usuario.
+        + id_permiso (optional, number) - ID del permiso que se asignará al usuario.
+
++ Response 201 (application/json)
+    + Body
+        {
+            "message": "Nuevo usuario registrado con éxito"
+        }
+
+### Iniciar Sesión [POST /auth/login]
+
++ Request (application/json)
+    + Attributes
+        + email: "johndoe@email.com" (string) - Correo electrónico del usuario.
+        + password: "mypassword123" (string) - Contraseña del usuario.
+
++ Response 200 (application/json)
+    + Body
+        {
+            "token": "JWT token"
+        }
+
+### Verificar Permiso [GET /auth/permiso]
+
++ Headers
+    + Authorization: `Bearer JWT token` (string) - El token JWT generado durante el inicio de sesión.
+
++ Response 200 (application/json)
+    + Body
+        {
+            "id_usuario": 1,
+            "permiso": "admin",
+            "nivel": 5
+        }
