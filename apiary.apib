@@ -13,219 +13,145 @@ HOST: http://api.restaurante.com
 Esta API permite gestionar el menú de un restaurante, incluyendo la creación, actualización, y consulta de productos del menú y sus agregados.
 
 # Group Menú
+# Grupo Menú
 
-## Menú Collection [/menu]
-
-### Obtener Todos los Productos del Menú y sus agregados[GET]
-Este endpoint está pensado para obtener los productos del menú y sus agregados. Responde con un JSON listando productos y sus agregados.
-
+## Listar todos los productos del menú [GET /menu]
 + Response 200 (application/json)
-
     + Body
 
             [
                 {
                     "id": 1,
-                    "producto": "Pizza Margherita",
-                    "precio": 8.99,
-                    "descripcion": "Tomato, mozzarella, and basil.",
-                    "categoria": "Pizza",
+                    "producto": "Pizza",
+                    "precio": 12.50,
+                    "descripcion": "Pizza con queso y tomate",
+                    "categoria": "Comida rápida",
                     "agregados": [
                         {
                             "id": 1,
-                            "id_menu": 1,
-                            "nombre": "Extra Cheese",
-                            "precio": 1.50,
-                            "descripcion": "Extra mozzarella cheese."
-                        },
-                        {
-                            "id": 2,
-                            "id_menu": 1,
-                            "nombre": "Olives",
-                            "precio": 0.75,
-                            "descripcion": "Fresh olives."
+                            "nombre": "Extra queso",
+                            "precio": 2.00,
+                            "descripcion": "Queso adicional"
                         }
                     ]
                 }
             ]
 
-### Crear un Nuevo Producto en el Menú y sus agregados[POST]
-Este endpoint esta pensado para que el adminstrador pueda cargar nuevos platos y sus agregados al menú. Admite platos sin agregados.
-+ Request (application/json)
+## Obtener un producto por su ID [GET /menu/{id}]
++ Parameters
+    + id: 1 (required, number, `1`) - ID del producto
 
++ Response 200 (application/json)
     + Body
 
             {
-                "producto": "Pizza Pepperoni",
-                "precio": 10.99,
-                "descripcion": "Pepperoni, mozzarella, and tomato sauce.",
-                "categoria": "Pizza",
+                "id": 1,
+                "producto": "Pizza",
+                "precio": 12.50,
+                "descripcion": "Pizza con queso y tomate",
+                "categoria": "Comida rápida",
                 "agregados": [
                     {
-                        "nombre": "Extra Cheese",
-                        "precio": 1.50,
-                        "descripcion": "Extra mozzarella cheese."
-                    },
+                        "id": 1,
+                        "nombre": "Extra queso",
+                        "precio": 2.00,
+                        "descripcion": "Queso adicional"
+                    }
+                ]
+            }
+
+## Crear un nuevo producto [POST /menu]
++ Request (application/json)
+    + Body
+
+            {
+                "producto": "Ensalada",
+                "precio": 8.00,
+                "descripcion": "Ensalada mixta con aderezo",
+                "categoria": "Vegetariana",
+                "agregados": [
                     {
-                        "nombre": "Mushrooms",
-                        "precio": 0.75,
-                        "descripcion": "Fresh mushrooms."
+                        "nombre": "Aderezo ranch",
+                        "precio": 1.00,
+                        "descripcion": "Aderezo cremoso"
                     }
                 ]
             }
 
 + Response 201 (application/json)
-
     + Body
 
             {
                 "id": 2,
-                "producto": "Pizza Pepperoni",
-                "precio": 10.99,
-                "descripcion": "Pepperoni, mozzarella, and tomato sauce.",
-                "categoria": "Pizza",
+                "producto": "Ensalada",
+                "precio": 8.00,
+                "descripcion": "Ensalada mixta con aderezo",
+                "categoria": "Vegetariana",
                 "agregados": [
-                    {
-                        "id": 5,
-                        "id_menu": 2,
-                        "nombre": "Extra Cheese",
-                        "precio": 1.50,
-                        "descripcion": "Extra mozzarella cheese."
-                    },
-                    {
-                        "id": 6,
-                        "id_menu": 2,
-                        "nombre": "Mushrooms",
-                        "precio": 0.75,
-                        "descripcion": "Fresh mushrooms."
-                    }
-                ]
-            }
-
-## Menú Item [/menu/{id}]
-
-### Obtener un Producto y agregados del Menú por ID [GET]
-Este endpoint esta pensado para que el administrador pueda ver un plato en particular y sus agregados, luego podría modificar los campos del mismo.
-
-+ Parameters
-    + id: `1` (number, required) - El ID del producto del menú que se desea consultar.
-
-+ Response 200 (application/json)
-
-    + Body
-
-            {
-                "id": 1,
-                "producto": "Pizza Margherita",
-                "precio": 8.99,
-                "descripcion": "Tomato, mozzarella, and basil.",
-                "categoria": "Pizza",
-                "agregados": [
-                    {
-                        "id": 1,
-                        "id_menu": 1,
-                        "nombre": "Extra Cheese",
-                        "precio": 1.50,
-                        "descripcion": "Extra mozzarella cheese."
-                    },
                     {
                         "id": 2,
-                        "id_menu": 1,
-                        "nombre": "Olives",
-                        "precio": 0.75,
-                        "descripcion": "Fresh olives."
+                        "nombre": "Aderezo ranch",
+                        "precio": 1.00,
+                        "descripcion": "Aderezo cremoso"
                     }
                 ]
             }
 
-### Actualizar un Producto o agregado del Menú [PUT]
-Este endpoint esta pensado para modificar un producto del menú. Admite cambios en el producto o sus agregados.
+## Actualizar un producto por su ID [PUT /menu/{id}]
 + Parameters
-    + id: `1` (number, required) - El ID del producto del menú que se desea actualizar.
+    + id: 1 (required, number, `1`) - ID del producto
 
 + Request (application/json)
-
     + Body
 
             {
-                "producto": "Pizza Margherita",
-                "precio": 9.99,
-                "descripcion": "Tomato, mozzarella, and basil.",
-                "categoria": "Pizza",
+                "producto": "Pizza actualizada",
+                "precio": 15.00,
+                "descripcion": "Pizza con más ingredientes",
+                "categoria": "Comida rápida",
                 "agregados": [
                     {
-                        "nombre": "Extra Cheese",
-                        "precio": 1.50,
-                        "descripcion": "Extra mozzarella cheese."
-                    },
-                    {
-                        "nombre": "Olives",
-                        "precio": 0.75,
-                        "descripcion": "Fresh olives."
+                        "nombre": "Pepperoni",
+                        "precio": 3.00,
+                        "descripcion": "Pepperoni adicional"
                     }
                 ]
             }
 
 + Response 200 (application/json)
-
     + Body
 
             {
                 "id": 1,
-                "producto": "Pizza Margherita",
-                "precio": 9.99,
-                "descripcion": "Tomato, mozzarella, and basil.",
-                "categoria": "Pizza",
+                "producto": "Pizza actualizada",
+                "precio": 15.00,
+                "descripcion": "Pizza con más ingredientes",
+                "categoria": "Comida rápida",
                 "agregados": [
                     {
                         "id": 3,
-                        "id_menu": 1,
-                        "nombre": "Extra Cheese",
-                        "precio": 1.50,
-                        "descripcion": "Extra mozzarella cheese."
-                    },
-                    {
-                        "id": 4,
-                        "id_menu": 1,
-                        "nombre": "Olives",
-                        "precio": 0.75,
-                        "descripcion": "Fresh olives."
+                        "nombre": "Pepperoni",
+                        "precio": 3.00,
+                        "descripcion": "Pepperoni adicional"
                     }
                 ]
             }
 
-### Eliminar un Producto del Menú [DELETE]
-Este endpoint sirve para eliminar el producto con sus agregados. Existirá otro endpoint para eliminar solo agregados.
+## Eliminar un producto por su ID [DELETE /menu/{id}]
 + Parameters
-    + id: `1` (number, required) - El ID del producto del menú que se desea eliminar.
+    + id: 1 (required, number, `1`) - ID del producto
 
 + Response 200 (application/json)
-
     + Body
 
             {
                 "message": "Producto y agregados eliminados"
             }
 
-+ Response 404 (application/json)
+# Grupo Pedidos
 
-    + Body
-
-            {
-                "message": "Producto no encontrado"
-            }
-            
-            
-# Group Pedidos
-
-## Pedidos Collection [/pedidos]
-
-### Crear un Pedido [POST]
-
-Este endpoint permite crear un pedido para un producto y sus agregados. Se creará un registro por cada agregado, además del registro principal del producto.
-
+## Crear un nuevo pedido [POST /pedidos]
 + Request (application/json)
-
     + Body
 
             {
@@ -236,9 +162,140 @@ Este endpoint permite crear un pedido para un producto y sus agregados. Se crear
             }
 
 + Response 201 (application/json)
-
     + Body
 
             {
                 "message": "Pedido creado con éxito"
             }
+
+## Listar todos los pedidos [GET /pedidos]
++ Response 200 (application/json)
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "id_mesa": 5,
+                    "cantidad": 2,
+                    "solicitado": "2024-09-01T12:34:56",
+                    "entregado": false,
+                    "producto": {
+                        "id": 1,
+                        "producto": "Pizza"
+                    },
+                    "agregados": [
+                        {
+                            "id": 1,
+                            "nombre": "Extra queso"
+                        },
+                        {
+                            "id": 2,
+                            "nombre": "Pepperoni"
+                        }
+                    ]
+                }
+            ]
+
+## Obtener un pedido por su ID [GET /pedidos/{id}]
++ Parameters
+    + id: 1 (required, number, `1`) - ID del pedido
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "id": 1,
+                "id_mesa": 5,
+                "cantidad": 2,
+                "solicitado": "2024-09-01T12:34:56",
+                "entregado": false,
+                "producto": {
+                    "id": 1,
+                    "producto": "Pizza"
+                },
+                "agregados": [
+                    {
+                        "id": 1,
+                        "nombre": "Extra queso"
+                    }
+                ]
+            }
+
+## Marcar un pedido como entregado [PUT /pedidos/{id}/entregar]
++ Parameters
+    + id: 1 (required, number, `1`) - ID del pedido
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "message": "Pedido marcado como entregado",
+                "pedido": {
+                    "id": 1,
+                    "entregado": true,
+                    "hentrega": "2024-09-01T14:00:00"
+                }
+            }
+
+## Corregir un pedido [PUT /pedidos/{id}/corregir]
++ Parameters
+    + id: 1 (required, number, `1`) - ID del pedido
+
++ Request (application/json)
+    + Body
+
+            {
+                "id_menu": 1,
+                "id_agregado": 2,
+                "cantidad": 3
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "message": "Pedido corregido con éxito",
+                "pedido": {
+                    "id": 1,
+                    "id_menu": 1,
+                    "id_agregado": 2,
+                    "cantidad": 3,
+                    "solicitado": "2024-09-01T12:34:56",
+                    "entregado": false,
+                    "hentrega": null
+                }
+            }
+# Grupo Imágenes
+
+## Asociar una imagen con un producto [POST /imagenes]
++ Request (application/json)
+    + Body
+
+            {
+                "id_menu": 1,
+                "url": "http://example.com/image.jpg"
+            }
+
++ Response 201 (application/json)
+    + Body
+
+            {
+                "id": 1,
+                "id_menu": 1,
+                "url": "http://example.com/image.jpg"
+            }
+
+## Obtener imágenes de un producto [GET /imagenes/{id_menu}]
++ Parameters
+    + id_menu: 1 (required, number, `1`) - ID del producto
+
++ Response 200 (application/json)
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "id_menu": 1,
+                    "url": "http://example.com/image.jpg"
+                }
+            ]
