@@ -1,214 +1,403 @@
-FORMAT: 1A
-HOST: URL Pythonanywhere
+# API Restomanager
 
-# RestoManager
-
-Polls is a simple API allowing consumers to view polls and vote in them.
-
-FORMAT: 1A
-HOST: http://api.restaurante.com
-
-# API de Gestión de Pedidos del Restaurante
-
-Esta API permite gestionar el menú de un restaurante, incluyendo la creación, actualización, y consulta de productos del menú y sus agregados.
-
-# Group Menú
-# Grupo Menú
-
-## Listar todos los productos del menú [GET /menu]
-+ Response 200 (application/json)
-    + Body
-
-            [
-                {
-                    "id": 1,
-                    "producto": "Pizza",
-                    "precio": 12.50,
-                    "descripcion": "Pizza con queso y tomate",
-                    "categoria": "Comida rápida",
-                    "agregados": [
-                        {
-                            "id": 1,
-                            "nombre": "Extra queso",
-                            "precio": 2.00,
-                            "descripcion": "Queso adicional"
-                        }
-                    ]
-                }
-            ]
-
-## Obtener un producto por su ID [GET /menu/{id}]
-+ Parameters
-    + id: 1 (required, number, `1`) - ID del producto
-
-+ Response 200 (application/json)
-    + Body
-
-            {
-                "id": 1,
-                "producto": "Pizza",
-                "precio": 12.50,
-                "descripcion": "Pizza con queso y tomate",
-                "categoria": "Comida rápida",
-                "agregados": [
-                    {
-                        "id": 1,
-                        "nombre": "Extra queso",
-                        "precio": 2.00,
-                        "descripcion": "Queso adicional"
-                    }
-                ]
-            }
+# Menú [/menu]
 
 ## Crear un nuevo producto [POST /menu]
 + Request (application/json)
     + Body
-
-            {
-                "producto": "Ensalada",
-                "precio": 8.00,
-                "descripcion": "Ensalada mixta con aderezo",
-                "categoria": "Vegetariana",
-                "agregados": [
-                    {
-                        "nombre": "Aderezo ranch",
-                        "precio": 1.00,
-                        "descripcion": "Aderezo cremoso"
-                    }
-                ]
-            }
-
-+ Response 201 (application/json)
-    + Body
-
-            {
-                "id": 2,
-                "producto": "Ensalada",
-                "precio": 8.00,
-                "descripcion": "Ensalada mixta con aderezo",
-                "categoria": "Vegetariana",
-                "agregados": [
-                    {
-                        "id": 2,
-                        "nombre": "Aderezo ranch",
-                        "precio": 1.00,
-                        "descripcion": "Aderezo cremoso"
-                    }
-                ]
-            }
-
-## Actualizar un producto por su ID [PUT /menu/{id}]
-+ Parameters
-    + id: 1 (required, number, `1`) - ID del producto
-
-+ Request (application/json)
-    + Body
-
-            {
-                "producto": "Pizza actualizada",
-                "precio": 15.00,
-                "descripcion": "Pizza con más ingredientes",
-                "categoria": "Comida rápida",
-                "agregados": [
-                    {
-                        "nombre": "Pepperoni",
-                        "precio": 3.00,
-                        "descripcion": "Pepperoni adicional"
-                    }
-                ]
-            }
-
-+ Response 200 (application/json)
-    + Body
-
-            {
-                "id": 1,
-                "producto": "Pizza actualizada",
-                "precio": 15.00,
-                "descripcion": "Pizza con más ingredientes",
-                "categoria": "Comida rápida",
-                "agregados": [
-                    {
-                        "id": 3,
-                        "nombre": "Pepperoni",
-                        "precio": 3.00,
-                        "descripcion": "Pepperoni adicional"
-                    }
-                ]
-            }
-
-## Eliminar un producto por su ID [DELETE /menu/{id}]
-+ Parameters
-    + id: 1 (required, number, `1`) - ID del producto
-
-+ Response 200 (application/json)
-    + Body
-
-            {
-                "message": "Producto y agregados eliminados"
-            }
-
-# Grupo Pedidos
-
-## Crear un nuevo pedido [POST /pedidos]
-+ Request (application/json)
-    + Body
-
-            {
-                "id_menu": 1,
-                "id_mesa": 5,
-                "agregados": [1, 2],
-                "cantidad": 2
-            }
-
-+ Response 201 (application/json)
-    + Body
-
-            {
-                "message": "Pedido creado con éxito"
-            }
-
-## Listar todos los pedidos [GET /pedidos]
-+ Response 200 (application/json)
-    + Body
-
-            [
+        ```json
+        {
+            "producto": "Pizza",
+            "precio": 10.99,
+            "descripcion": "Pizza de queso",
+            "categoria": "Entrante",
+            "agregados": [
                 {
-                    "id": 1,
-                    "id_mesa": 5,
-                    "cantidad": 2,
-                    "solicitado": "2024-09-01T12:34:56",
-                    "entregado": false,
-                    "producto": {
-                        "id": 1,
-                        "producto": "Pizza"
-                    },
-                    "agregados": [
-                        {
-                            "id": 1,
-                            "nombre": "Extra queso"
-                        },
-                        {
-                            "id": 2,
-                            "nombre": "Pepperoni"
-                        }
-                    ]
+                    "nombre": "Extra Queso",
+                    "precio": 1.50,
+                    "descripcion": "Queso adicional"
+                },
+                {
+                    "nombre": "Aceitunas",
+                    "precio": 0.75,
+                    "descripcion": "Aceitunas negras"
+                }
+            ],
+            "imagenes": [
+                {
+                    "url": "http://example.com/pizza.jpg"
                 }
             ]
+        }
+        ```
++ Response 201 (application/json)
+    + Body
+        ```json
+        {
+            "id": 1,
+            "producto": "Pizza",
+            "precio": 10.99,
+            "descripcion": "Pizza de queso",
+            "categoria": "Entrante",
+            "agregados": [
+                {
+                    "id": 1,
+                    "id_menu": 1,
+                    "nombre": "Extra Queso",
+                    "precio": 1.50,
+                    "descripcion": "Queso adicional"
+                },
+                {
+                    "id": 2,
+                    "id_menu": 1,
+                    "nombre": "Aceitunas",
+                    "precio": 0.75,
+                    "descripcion": "Aceitunas negras"
+                }
+            ],
+            "imagenes": [
+                {
+                    "id": 1,
+                    "id_menu": 1,
+                    "url": "http://example.com/pizza.jpg"
+                }
+            ]
+        }
+        ```
 
-## Obtener un pedido por su ID [GET /pedidos/{id}]
-+ Parameters
-    + id: 1 (required, number, `1`) - ID del pedido
-
+## Obtener todos los productos [GET /menu]
 + Response 200 (application/json)
     + Body
-
+        ```json
+        [
             {
                 "id": 1,
-                "id_mesa": 5,
-                "cantidad": 2,
-                "solicitado": "2024-09-01T12:34:56",
+                "producto": "Pizza",
+                "precio": 10.99,
+                "descripcion": "Pizza de queso",
+                "categoria": "Entrante",
+                "agregados": [
+                    {
+                        "nombre": "Extra Queso",
+                        "precio": 1.50,
+                        "descripcion": "Queso adicional"
+                    },
+                    {
+                        "nombre": "Aceitunas",
+                        "precio": 0.75,
+                        "descripcion": "Aceitunas negras"
+                    }
+                ],
+                "imagenes": [
+                    {
+                        "url": "http://example.com/pizza.jpg"
+                    }
+                ]
+            }
+        ]
+        ```
+
+## Obtener un producto por ID [GET /menu/{id}]
++ Parameters
+    + id: 1 (required, integer) - ID del producto
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "id": 1,
+            "producto": "Pizza",
+            "precio": 10.99,
+            "descripcion": "Pizza de queso",
+            "categoria": "Entrante",
+            "agregados": [
+                {
+                    "nombre": "Extra Queso",
+                    "precio": 1.50,
+                    "descripcion": "Queso adicional"
+                },
+                {
+                    "nombre": "Aceitunas",
+                    "precio": 0.75,
+                    "descripcion": "Aceitunas negras"
+                }
+            ],
+            "imagenes": [
+                {
+                    "url": "http://example.com/pizza.jpg"
+                }
+            ]
+        }
+        ```
+
+## Actualizar un producto [PUT /menu/{id}]
++ Parameters
+    + id: 1 (required, integer) - ID del producto a actualizar
++ Request (application/json)
+    + Body
+        ```json
+        {
+            "producto": "Pizza",
+            "precio": 12.99,
+            "descripcion": "Pizza con queso extra",
+            "categoria": "Principal",
+            "agregados": [
+                {
+                    "nombre": "Extra Queso",
+                    "precio": 1.50,
+                    "descripcion": "Queso adicional"
+                }
+            ],
+            "imagenes": [
+                {
+                    "url": "http://example.com/new_pizza.jpg"
+                }
+            ]
+        }
+        ```
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "id": 1,
+            "producto": "Pizza",
+            "precio": 12.99,
+            "descripcion": "Pizza con queso extra",
+            "categoria": "Principal",
+            "agregados": [
+                {
+                    "nombre": "Extra Queso",
+                    "precio": 1.50,
+                    "descripcion": "Queso adicional"
+                }
+            ],
+            "imagenes": [
+                {
+                    "url": "http://example.com/new_pizza.jpg"
+                }
+            ]
+        }
+        ```
+
+## Eliminar un producto [DELETE /menu/{id}]
++ Parameters
+    + id: 1 (required, integer) - ID del producto a eliminar
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "message": "Producto, agregados e imágenes eliminados"
+        }
+        ```
+
+# Agregado [/agregados]
+
+## Crear un nuevo agregado [POST /agregados]
++ Request (application/json)
+    + Body
+        ```json
+        {
+            "id_menu": 1,
+            "nombre": "Extra Queso",
+            "precio": 1.50,
+            "descripcion": "Queso adicional"
+        }
+        ```
++ Response 201 (application/json)
+    + Body
+        ```json
+        {
+            "id": 1,
+            "id_menu": 1,
+            "nombre": "Extra Queso",
+            "precio": 1.50,
+            "descripcion": "Queso adicional"
+        }
+        ```
+
+## Obtener todos los agregados [GET /agregados]
++ Response 200 (application/json)
+    + Body
+        ```json
+        [
+            {
+                "id": 1,
+                "id_menu": 1,
+                "nombre": "Extra Queso",
+                "precio": 1.50,
+                "descripcion": "Queso adicional"
+            }
+        ]
+        ```
+
+## Obtener un agregado por ID [GET /agregados/{id}]
++ Parameters
+    + id: 1 (required, integer) - ID del agregado
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "id": 1,
+            "id_menu": 1,
+            "nombre": "Extra Queso",
+            "precio": 1.50,
+            "descripcion": "Queso adicional"
+        }
+        ```
+
+## Actualizar un agregado [PUT /agregados/{id}]
++ Parameters
+    + id: 1 (required, integer) - ID del agregado a actualizar
++ Request (application/json)
+    + Body
+        ```json
+        {
+            "id_menu": 1,
+            "nombre": "Extra Queso",
+            "precio": 1.75,
+            "descripcion": "Queso extra"
+        }
+        ```
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "id": 1,
+            "id_menu": 1,
+            "nombre": "Extra Queso",
+            "precio": 1.75,
+            "descripcion": "Queso extra"
+        }
+        ```
+
+## Eliminar un agregado [DELETE /agregados/{id}]
++ Parameters
+    + id: 1 (required, integer) - ID del agregado a eliminar
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "message": "Agregado eliminado con éxito"
+        }
+        ```
+
+# Imagen [/imagen]
+
+## Agregar imagen al producto [POST /imagen]
++ Request (application/json)
+    + Body
+        ```json
+        {
+            "id_menu": 1,
+            "url": "http://example.com/image.jpg"
+        }
+        ```
++ Response 201 (application/json)
+    + Body
+        ```json
+        {
+            "id": 1,
+            "id_menu": 1,
+            "url": "http://example.com/image.jpg"
+        }
+        ```
+
+## Obtener imágenes del producto [GET /imagen/menu/{id_menu}]
++ Parameters
+    + id_menu: 1 (required, integer) - ID del menú
++ Response 200 (application/json)
+    + Body
+        ```json
+        [
+            {
+                "id": 1,
+                "id_menu": 1,
+                "url": "http://example.com/image1.jpg"
+            },
+            {
+                "id": 2,
+                "id_menu": 1,
+                "url": "http://example.com/image2.jpg"
+            }
+        ]
+        ```
+
+## Obtener imagen por ID [GET /imagen/{id}]
++ Parameters
+    + id: 1 (required, integer) - ID de la imagen
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "id": 1,
+            "id_menu": 1,
+            "url": "http://example.com/image.jpg"
+        }
+        ```
+
+## Cambiar imagen [PUT /imagen/{id}]
++ Parameters
+    + id: 1 (required, integer) - ID de la imagen
++ Request (application/json)
+    + Body
+        ```json
+        {
+            "url": "http://example.com/new_image.jpg"
+        }
+        ```
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "id": 1,
+            "id_menu": 1,
+            "url": "http://example.com/new_image.jpg"
+        }
+        ```
+
+## Borrar imagen [DELETE /imagen/{id}]
++ Parameters
+    + id: 1 (required, integer) - ID de la imagen
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "message": "Imagen eliminada con éxito"
+        }
+        ```
+
+# Pedidos [/pedidos]
+
+## Crear Pedido [POST /pedidos]
++ Request (application/json)
+    + Body
+        ```json
+        {
+            "id_menu": 1,
+            "id_mesa": 2,
+            "agregados": [1, 2],
+            "cantidad": 3
+        }
+        ```
++ Response 201 (application/json)
+    + Body
+        ```json
+        {
+            "message": "Pedido creado con éxito"
+        }
+        ```
+
+## Obtener Pedidos [GET /pedidos]
++ Response 200 (application/json)
+    + Body
+        ```json
+        [
+            {
+                "id": 1,
+                "id_mesa": 2,
+                "cantidad": 3,
+                "solicitado": "2024-09-08T12:00:00Z",
                 "entregado": false,
+                "hentrega": null,
                 "producto": {
                     "id": 1,
                     "producto": "Pizza"
@@ -216,129 +405,137 @@ Esta API permite gestionar el menú de un restaurante, incluyendo la creación, 
                 "agregados": [
                     {
                         "id": 1,
-                        "nombre": "Extra queso"
+                        "nombre": "Extra Queso"
                     }
                 ]
             }
+        ]
+        ```
 
-## Marcar un pedido como entregado [PUT /pedidos/{id}/entregar]
+## Obtener Pedido [GET /pedidos/{id}]
 + Parameters
-    + id: 1 (required, number, `1`) - ID del pedido
-
+    + id: 1 (required, integer) - ID del pedido
 + Response 200 (application/json)
     + Body
-
-            {
-                "message": "Pedido marcado como entregado",
-                "pedido": {
-                    "id": 1,
-                    "entregado": true,
-                    "hentrega": "2024-09-01T14:00:00"
-                }
-            }
-
-## Corregir un pedido [PUT /pedidos/{id}/corregir]
-+ Parameters
-    + id: 1 (required, number, `1`) - ID del pedido
-
-+ Request (application/json)
-    + Body
-
-            {
-                "id_menu": 1,
-                "id_agregado": 2,
-                "cantidad": 3
-            }
-
-+ Response 200 (application/json)
-    + Body
-
-            {
-                "message": "Pedido corregido con éxito",
-                "pedido": {
-                    "id": 1,
-                    "id_menu": 1,
-                    "id_agregado": 2,
-                    "cantidad": 3,
-                    "solicitado": "2024-09-01T12:34:56",
-                    "entregado": false,
-                    "hentrega": null
-                }
-            }
-# Grupo Imágenes
-
-## Asociar una imagen con un producto [POST /imagenes]
-+ Request (application/json)
-    + Body
-
-            {
-                "id_menu": 1,
-                "url": "http://example.com/image.jpg"
-            }
-
-+ Response 201 (application/json)
-    + Body
-
-            {
+        ```json
+        {
+            "id": 1,
+            "id_mesa": 2,
+            "cantidad": 3,
+            "solicitado": "2024-09-08T12:00:00Z",
+            "entregado": false,
+            "hentrega": null,
+            "producto": {
                 "id": 1,
-                "id_menu": 1,
-                "url": "http://example.com/image.jpg"
-            }
-
-## Obtener imágenes de un producto [GET /imagenes/{id_menu}]
-+ Parameters
-    + id_menu: 1 (required, number, `1`) - ID del producto
-
-+ Response 200 (application/json)
-    + Body
-
-            [
+                "producto": "Pizza"
+            },
+            "agregados": [
                 {
                     "id": 1,
-                    "id_menu": 1,
-                    "url": "http://example.com/image.jpg"
+                    "nombre": "Extra Queso"
                 }
             ]
-            
-## Autenticación [/auth]
-
-### Registrar Usuario [POST /auth/register]
-
-+ Request (application/json)
-    + Attributes
-        + nombre: "John Doe" (string) - Nombre del usuario.
-        + email: "johndoe@email.com" (string) - Correo electrónico del usuario.
-        + password: "mypassword123" (string) - Contraseña del usuario.
-        + id_permiso (optional, number) - ID del permiso que se asignará al usuario.
-
-+ Response 201 (application/json)
-    + Body
-        {
-            "message": "Nuevo usuario registrado con éxito"
         }
+        ```
 
-### Iniciar Sesión [POST /auth/login]
-
-+ Request (application/json)
-    + Attributes
-        + email: "johndoe@email.com" (string) - Correo electrónico del usuario.
-        + password: "mypassword123" (string) - Contraseña del usuario.
-
+## Marcar Pedido como Entregado [PUT /pedidos/{id}/entregar]
++ Parameters
+    + id: 1 (required, integer) - ID del pedido
 + Response 200 (application/json)
     + Body
+        ```json
         {
-            "token": "JWT token"
+            "message": "Pedido marcado como entregado",
+            "pedido": {
+                "id": 1,
+                "entregado": true,
+                "hentrega": "2024-09-08T12:05:00Z"
+            }
         }
+        ```
 
-### Verificar Permiso [GET /auth/permiso]
-
-+ Headers
-    + Authorization: `Bearer JWT token` (string) - El token JWT generado durante el inicio de sesión.
-
+## Corregir Pedido [PUT /pedidos/{id}/corregir]
++ Parameters
+    + id: 1 (required, integer) - ID del pedido
++ Request (application/json)
+    + Body
+        ```json
+        {
+            "id_menu": 2,
+            "id_agregado": 3,
+            "cantidad": 2
+        }
+        ```
 + Response 200 (application/json)
     + Body
+        ```json
         {
-            "id_usuario": 1,
-            "permiso": "admin",
-            "nivel": 5
+            "message": "Pedido corregido con éxito",
+            "pedido": {
+                "id": 1,
+                "id_menu": 2,
+                "id_agregado": 3,
+                "cantidad": 2,
+                "solicitado": "2024-09-08T12:00:00Z",
+                "entregado": false,
+                "hentrega": null
+            }
         }
+        ```
++ Response 403 (application/json)
+    + Body
+        ```json
+        {
+            "message": "El tiempo para corregir el pedido ha expirado"
+        }
+        ```
++ Response 400 (application/json)
+    + Body
+        ```json
+        {
+            "message": "No se puede corregir un pedido que ya ha sido entregado"
+        }
+        ```
+
+## Eliminar Pedido [DELETE /pedidos/{id}]
++ Parameters
+    + id: 1 (required, integer) - ID del pedido
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "message": "Pedido eliminado con éxito"
+        }
+        ```
++ Response 403 (application/json)
+    + Body
+        ```json
+        {
+            "message": "No se puede eliminar el pedido después de 3 minutos"
+        }
+        ```
++ Response 400 (application/json)
+    + Body
+        ```json
+        {
+            "message": "No se puede eliminar un pedido que ya ha sido entregado"
+        }
+        ```
+
+## Forzar Eliminación de Pedido [DELETE /pedidos/{id}/forzar-eliminar]
++ Parameters
+    + id: 1 (required, integer) - ID del pedido
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "message": "Pedido eliminado con éxito, sin restricción de tiempo"
+        }
+        ```
++ Response 400 (application/json)
+    + Body
+        ```json
+        {
+            "message": "No se puede eliminar un pedido que ya ha sido entregado"
+        }
+        ```
