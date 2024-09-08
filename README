@@ -1,1 +1,344 @@
-En este repositorio encontrarán el link a la documentación para el proyecto de NoCountry. 
+FORMAT: 1A
+HOST: URL Pythonanywhere
+
+# RestoManager
+
+Polls is a simple API allowing consumers to view polls and vote in them.
+
+FORMAT: 1A
+HOST: http://api.restaurante.com
+
+# API de Gestión de Pedidos del Restaurante
+
+Esta API permite gestionar el menú de un restaurante, incluyendo la creación, actualización, y consulta de productos del menú y sus agregados.
+
+# Group Menú
+# Grupo Menú
+
+## Listar todos los productos del menú [GET /menu]
++ Response 200 (application/json)
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "producto": "Pizza",
+                    "precio": 12.50,
+                    "descripcion": "Pizza con queso y tomate",
+                    "categoria": "Comida rápida",
+                    "agregados": [
+                        {
+                            "id": 1,
+                            "nombre": "Extra queso",
+                            "precio": 2.00,
+                            "descripcion": "Queso adicional"
+                        }
+                    ]
+                }
+            ]
+
+## Obtener un producto por su ID [GET /menu/{id}]
++ Parameters
+    + id: 1 (required, number, `1`) - ID del producto
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "id": 1,
+                "producto": "Pizza",
+                "precio": 12.50,
+                "descripcion": "Pizza con queso y tomate",
+                "categoria": "Comida rápida",
+                "agregados": [
+                    {
+                        "id": 1,
+                        "nombre": "Extra queso",
+                        "precio": 2.00,
+                        "descripcion": "Queso adicional"
+                    }
+                ]
+            }
+
+## Crear un nuevo producto [POST /menu]
++ Request (application/json)
+    + Body
+
+            {
+                "producto": "Ensalada",
+                "precio": 8.00,
+                "descripcion": "Ensalada mixta con aderezo",
+                "categoria": "Vegetariana",
+                "agregados": [
+                    {
+                        "nombre": "Aderezo ranch",
+                        "precio": 1.00,
+                        "descripcion": "Aderezo cremoso"
+                    }
+                ]
+            }
+
++ Response 201 (application/json)
+    + Body
+
+            {
+                "id": 2,
+                "producto": "Ensalada",
+                "precio": 8.00,
+                "descripcion": "Ensalada mixta con aderezo",
+                "categoria": "Vegetariana",
+                "agregados": [
+                    {
+                        "id": 2,
+                        "nombre": "Aderezo ranch",
+                        "precio": 1.00,
+                        "descripcion": "Aderezo cremoso"
+                    }
+                ]
+            }
+
+## Actualizar un producto por su ID [PUT /menu/{id}]
++ Parameters
+    + id: 1 (required, number, `1`) - ID del producto
+
++ Request (application/json)
+    + Body
+
+            {
+                "producto": "Pizza actualizada",
+                "precio": 15.00,
+                "descripcion": "Pizza con más ingredientes",
+                "categoria": "Comida rápida",
+                "agregados": [
+                    {
+                        "nombre": "Pepperoni",
+                        "precio": 3.00,
+                        "descripcion": "Pepperoni adicional"
+                    }
+                ]
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "id": 1,
+                "producto": "Pizza actualizada",
+                "precio": 15.00,
+                "descripcion": "Pizza con más ingredientes",
+                "categoria": "Comida rápida",
+                "agregados": [
+                    {
+                        "id": 3,
+                        "nombre": "Pepperoni",
+                        "precio": 3.00,
+                        "descripcion": "Pepperoni adicional"
+                    }
+                ]
+            }
+
+## Eliminar un producto por su ID [DELETE /menu/{id}]
++ Parameters
+    + id: 1 (required, number, `1`) - ID del producto
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "message": "Producto y agregados eliminados"
+            }
+
+# Grupo Pedidos
+
+## Crear un nuevo pedido [POST /pedidos]
++ Request (application/json)
+    + Body
+
+            {
+                "id_menu": 1,
+                "id_mesa": 5,
+                "agregados": [1, 2],
+                "cantidad": 2
+            }
+
++ Response 201 (application/json)
+    + Body
+
+            {
+                "message": "Pedido creado con éxito"
+            }
+
+## Listar todos los pedidos [GET /pedidos]
++ Response 200 (application/json)
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "id_mesa": 5,
+                    "cantidad": 2,
+                    "solicitado": "2024-09-01T12:34:56",
+                    "entregado": false,
+                    "producto": {
+                        "id": 1,
+                        "producto": "Pizza"
+                    },
+                    "agregados": [
+                        {
+                            "id": 1,
+                            "nombre": "Extra queso"
+                        },
+                        {
+                            "id": 2,
+                            "nombre": "Pepperoni"
+                        }
+                    ]
+                }
+            ]
+
+## Obtener un pedido por su ID [GET /pedidos/{id}]
++ Parameters
+    + id: 1 (required, number, `1`) - ID del pedido
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "id": 1,
+                "id_mesa": 5,
+                "cantidad": 2,
+                "solicitado": "2024-09-01T12:34:56",
+                "entregado": false,
+                "producto": {
+                    "id": 1,
+                    "producto": "Pizza"
+                },
+                "agregados": [
+                    {
+                        "id": 1,
+                        "nombre": "Extra queso"
+                    }
+                ]
+            }
+
+## Marcar un pedido como entregado [PUT /pedidos/{id}/entregar]
++ Parameters
+    + id: 1 (required, number, `1`) - ID del pedido
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "message": "Pedido marcado como entregado",
+                "pedido": {
+                    "id": 1,
+                    "entregado": true,
+                    "hentrega": "2024-09-01T14:00:00"
+                }
+            }
+
+## Corregir un pedido [PUT /pedidos/{id}/corregir]
++ Parameters
+    + id: 1 (required, number, `1`) - ID del pedido
+
++ Request (application/json)
+    + Body
+
+            {
+                "id_menu": 1,
+                "id_agregado": 2,
+                "cantidad": 3
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "message": "Pedido corregido con éxito",
+                "pedido": {
+                    "id": 1,
+                    "id_menu": 1,
+                    "id_agregado": 2,
+                    "cantidad": 3,
+                    "solicitado": "2024-09-01T12:34:56",
+                    "entregado": false,
+                    "hentrega": null
+                }
+            }
+# Grupo Imágenes
+
+## Asociar una imagen con un producto [POST /imagenes]
++ Request (application/json)
+    + Body
+
+            {
+                "id_menu": 1,
+                "url": "http://example.com/image.jpg"
+            }
+
++ Response 201 (application/json)
+    + Body
+
+            {
+                "id": 1,
+                "id_menu": 1,
+                "url": "http://example.com/image.jpg"
+            }
+
+## Obtener imágenes de un producto [GET /imagenes/{id_menu}]
++ Parameters
+    + id_menu: 1 (required, number, `1`) - ID del producto
+
++ Response 200 (application/json)
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "id_menu": 1,
+                    "url": "http://example.com/image.jpg"
+                }
+            ]
+            
+## Autenticación [/auth]
+
+### Registrar Usuario [POST /auth/register]
+
++ Request (application/json)
+    + Attributes
+        + nombre: "John Doe" (string) - Nombre del usuario.
+        + email: "johndoe@email.com" (string) - Correo electrónico del usuario.
+        + password: "mypassword123" (string) - Contraseña del usuario.
+        + id_permiso (optional, number) - ID del permiso que se asignará al usuario.
+
++ Response 201 (application/json)
+    + Body
+        {
+            "message": "Nuevo usuario registrado con éxito"
+        }
+
+### Iniciar Sesión [POST /auth/login]
+
++ Request (application/json)
+    + Attributes
+        + email: "johndoe@email.com" (string) - Correo electrónico del usuario.
+        + password: "mypassword123" (string) - Contraseña del usuario.
+
++ Response 200 (application/json)
+    + Body
+        {
+            "token": "JWT token"
+        }
+
+### Verificar Permiso [GET /auth/permiso]
+
++ Headers
+    + Authorization: `Bearer JWT token` (string) - El token JWT generado durante el inicio de sesión.
+
++ Response 200 (application/json)
+    + Body
+        {
+            "id_usuario": 1,
+            "permiso": "admin",
+            "nivel": 5
+        }
