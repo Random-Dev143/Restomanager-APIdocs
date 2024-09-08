@@ -539,3 +539,142 @@
             "message": "No se puede eliminar un pedido que ya ha sido entregado"
         }
         ```
+
+# Autenticación [/auth]
+
+## Registro de Usuario [POST /auth/register]
++ Request (application/json)
+    + Body
+        ```json
+        {
+            "nombre": "Juan Pérez",
+            "email": "juan.perez@example.com",
+            "password": "password123",
+            "id_permiso": 2
+        }
+        ```
++ Response 201 (application/json)
+    + Body
+        ```json
+        {
+            "message": "User created"
+        }
+        ```
++ Response 400 (application/json)
+    + Body
+        ```json
+        {
+            "message": "Missing fields"
+        }
+        ```
+    + Body
+        ```json
+        {
+            "message": "Invalid id_permiso"
+        }
+        ```
+    + Body
+        ```json
+        {
+            "message": "User already exists"
+        }
+        ```
+
+## Inicio de sesión [POST /auth/login]
++ Request (application/json)
+    + Body
+        ```json
+        {
+            "email": "juan.perez@example.com",
+            "password": "password123"
+        }
+        ```
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "token": "jwt_token_here"
+        }
+        ```
++ Response 401 (application/json)
+    + Body
+        ```json
+        {
+            "message": "Credenciales inválidas"
+        }
+        ```
+
+## Verificar Permiso [GET /auth/permiso]
++ Request (application/json)
+    + Headers
+        + Authorization: Bearer jwt_token_here
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "id_usuario": 1,
+            "permiso": "Administrador",
+            "nivel": 2
+        }
+        ```
++ Response 404 (application/json)
+    + Body
+        ```json
+        {
+            "message": "Usuario no encontrado"
+        }
+        ```
+    + Body
+        ```json
+        {
+            "message": "No se encontraron permisos para este usuario"
+        }
+        ```
+
+## Eliminar Usuario [DELETE /auth/users/{user_id}]
++ Parameters
+    + user_id: 1 (required, integer) - ID del usuario a eliminar
++ Request (application/json)
+    + Headers
+        + Authorization: Bearer jwt_token_here
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "message": "Usuario eliminado con éxito"
+        }
+        ```
++ Response 404 (application/json)
+    + Body
+        ```json
+        {
+            "message": "Usuario no encontrado"
+        }
+        ```
+
+## Obtener Usuarios [GET /auth/users]
++ Request (application/json)
+    + Headers
+        + Authorization: Bearer jwt_token_here
++ Response 200 (application/json)
+    + Body
+        ```json
+        [
+            {
+                "id": 1,
+                "nombre": "Juan Pérez",
+                "email": "juan.perez@example.com",
+                "id_permiso": 2
+            }
+        ]
+        ```
+
+# Middleware
+
+## Requerir Inicio de Sesión [login_required]
++ Description: Asegura que el usuario esté autenticado para acceder al recurso.
+
+## Comprobar Permisos [check_permissions]
++ Description: Asegura que el usuario tenga los permisos necesarios para acceder al recurso.
++ Parameters
+    + required_permission: 1 (required, integer) - Nivel de permiso necesario para acceder al recurso
