@@ -1,193 +1,262 @@
 # API Restomanager
 
-# Menú [/menu]
+FORMAT: 1A
+HOST: https://restomanager.onrender.com
 
-## Crear un nuevo producto [POST /menu]
-+ Request (application/json)
-    + Body
-        ```json
-        {
-            "producto": "Pizza",
-            "precio": 10.99,
-            "descripcion": "Pizza de queso",
-            "categoria": "Entrante",
-            "agregados": [
-                {
-                    "nombre": "Extra Queso",
-                    "precio": 1.50,
-                    "descripcion": "Queso adicional"
-                },
-                {
-                    "nombre": "Aceitunas",
-                    "precio": 0.75,
-                    "descripcion": "Aceitunas negras"
-                }
-            ],
-            "imagenes": [
-                {
-                    "url": "http://example.com/pizza.jpg"
-                }
-            ]
-        }
-        ```
-+ Response 201 (application/json)
-    + Body
-        ```json
-        {
-            "id": 1,
-            "producto": "Pizza",
-            "precio": 10.99,
-            "descripcion": "Pizza de queso",
-            "categoria": "Entrante",
-            "agregados": [
-                {
-                    "id": 1,
-                    "id_menu": 1,
-                    "nombre": "Extra Queso",
-                    "precio": 1.50,
-                    "descripcion": "Queso adicional"
-                },
-                {
-                    "id": 2,
-                    "id_menu": 1,
-                    "nombre": "Aceitunas",
-                    "precio": 0.75,
-                    "descripcion": "Aceitunas negras"
-                }
-            ],
-            "imagenes": [
-                {
-                    "id": 1,
-                    "id_menu": 1,
-                    "url": "http://example.com/pizza.jpg"
-                }
-            ]
-        }
-        ```
+## Menú [/menu]
 
-## Obtener todos los productos [GET /menu]
+### Obtener todos los productos [GET]
 + Response 200 (application/json)
+
     + Body
-        ```json
+
         [
             {
                 "id": 1,
-                "producto": "Pizza",
-                "precio": 10.99,
-                "descripcion": "Pizza de queso",
-                "categoria": "Entrante",
+                "producto": "Papas Nostra",
+                "precio": 3400,
+                "descripcion": "Papas fritas, salsa cheddar, panceta crispy",
+                "categoria": "Entradas",
                 "agregados": [
                     {
-                        "nombre": "Extra Queso",
-                        "precio": 1.50,
-                        "descripcion": "Queso adicional"
+                        "nombre": "Extra Cheddar",
+                        "precio": 300,
+                        "descripcion": ""
                     },
                     {
-                        "nombre": "Aceitunas",
-                        "precio": 0.75,
-                        "descripcion": "Aceitunas negras"
+                        "nombre": "Panceta",
+                        "precio": 600,
+                        "descripcion": ""
                     }
                 ],
                 "imagenes": [
                     {
-                        "url": "http://example.com/pizza.jpg"
+                        "url": "https://fakeurl.com/imagen1"
                     }
                 ]
             }
         ]
-        ```
 
-## Obtener un producto por ID [GET /menu/{id}]
-+ Parameters
-    + id: 1 (required, integer) - ID del producto
-+ Response 200 (application/json)
+### Crear un nuevo producto o múltiples productos [POST]
+Este endpoint acepta un objeto de producto o una lista de objetos para crear uno o más productos simultáneamente.
+
++ Request (application/json)
+    + Headers
+        + Authorization: Bearer jwt_token_here
+
     + Body
-        ```json
+
+        [
+            {
+                "producto": "Papas Nostra",
+                "precio": 3400,
+                "descripcion": "Papas fritas, salsa cheddar, panceta crispy",
+                "categoria": "Entradas",
+                "agregados": [
+                    {
+                        "nombre": "Extra Cheddar",
+                        "precio": 300,
+                        "descripcion": ""
+                    },
+                    {
+                        "nombre": "Panceta",
+                        "precio": 600,
+                        "descripcion": ""
+                    }
+                ],
+                "imagenes": [
+                    {
+                        "url": "https://fakeurl.com/imagen1"
+                    }
+                ]
+            },
+            {
+                "producto": "Rabas",
+                "precio": 6800,
+                "descripcion": "Rabas con salsa criolla",
+                "categoria": "Entradas",
+                "agregados": [
+                    {
+                        "nombre": "Aros de cebolla",
+                        "precio": 700,
+                        "descripcion": ""
+                    },
+                    {
+                        "nombre": "Salsa de palta",
+                        "precio": 200,
+                        "descripcion": ""
+                    }
+                ],
+                "imagenes": [
+                    {
+                        "url": "https://fakeurl.com/imagen2"
+                    }
+                ]
+            }
+        ]
+
++ Response 201 (application/json)
+
+    + Body
+
+        [
+            {
+                "id": 1,
+                "producto": "Papas Nostra",
+                "precio": 3400,
+                "descripcion": "Papas fritas, salsa cheddar, panceta crispy",
+                "categoria": "Entradas",
+                "agregados": [
+                    {
+                        "nombre": "Extra Cheddar",
+                        "precio": 300,
+                        "descripcion": ""
+                    },
+                    {
+                        "nombre": "Panceta",
+                        "precio": 600,
+                        "descripcion": ""
+                    }
+                ],
+                "imagenes": [
+                    {
+                        "url": "https://fakeurl.com/imagen1"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "producto": "Rabas",
+                "precio": 6800,
+                "descripcion": "Rabas con salsa criolla",
+                "categoria": "Entradas",
+                "agregados": [
+                    {
+                        "nombre": "Aros de cebolla",
+                        "precio": 700,
+                        "descripcion": ""
+                    },
+                    {
+                        "nombre": "Salsa de palta",
+                        "precio": 200,
+                        "descripcion": ""
+                    }
+                ],
+                "imagenes": [
+                    {
+                        "url": "https://fakeurl.com/imagen2"
+                    }
+                ]
+            }
+        ]
+
+
+### Obtener un producto por ID [GET]
++ Parameters
+    + id (number) - El ID del menú a obtener.
+
++ Response 200 (application/json)
+
+    + Body
+
         {
             "id": 1,
-            "producto": "Pizza",
-            "precio": 10.99,
-            "descripcion": "Pizza de queso",
-            "categoria": "Entrante",
+            "producto": "Papas Nostra",
+            "precio": 3400,
+            "descripcion": "Papas fritas, salsa cheddar, panceta crispy",
+            "categoria": "Entradas",
             "agregados": [
                 {
-                    "nombre": "Extra Queso",
-                    "precio": 1.50,
-                    "descripcion": "Queso adicional"
+                    "nombre": "Extra Cheddar",
+                    "precio": 300,
+                    "descripcion": ""
                 },
                 {
-                    "nombre": "Aceitunas",
-                    "precio": 0.75,
-                    "descripcion": "Aceitunas negras"
+                    "nombre": "Panceta",
+                    "precio": 600,
+                    "descripcion": ""
                 }
             ],
             "imagenes": [
                 {
-                    "url": "http://example.com/pizza.jpg"
+                    "url": "https://fakeurl.com/imagen1"
                 }
             ]
         }
-        ```
 
-## Actualizar un producto [PUT /menu/{id}]
+### Actualizar un producto por ID [PUT]
 + Parameters
-    + id: 1 (required, integer) - ID del producto a actualizar
+    + id (number) - El ID del producto a actualizar.
+
 + Request (application/json)
+
     + Body
-        ```json
+
         {
-            "producto": "Pizza",
-            "precio": 12.99,
-            "descripcion": "Pizza con queso extra",
-            "categoria": "Principal",
+            "producto": "Papas Nostra",
+            "precio": 3400,
+            "descripcion": "Papas fritas, salsa cheddar, panceta crispy",
+            "categoria": "Entradas",
             "agregados": [
                 {
-                    "nombre": "Extra Queso",
-                    "precio": 1.50,
-                    "descripcion": "Queso adicional"
+                    "nombre": "Extra Cheddar",
+                    "precio": 300,
+                    "descripcion": ""
+                },
+                {
+                    "nombre": "Panceta",
+                    "precio": 600,
+                    "descripcion": ""
                 }
             ],
             "imagenes": [
                 {
-                    "url": "http://example.com/new_pizza.jpg"
+                    "url": "https://fakeurl.com/imagen1"
                 }
             ]
         }
-        ```
+
 + Response 200 (application/json)
+
     + Body
-        ```json
+
         {
             "id": 1,
-            "producto": "Pizza",
-            "precio": 12.99,
-            "descripcion": "Pizza con queso extra",
-            "categoria": "Principal",
+            "producto": "Papas Nostra",
+            "precio": 3400,
+            "descripcion": "Papas fritas, salsa cheddar, panceta crispy",
+            "categoria": "Entradas",
             "agregados": [
                 {
-                    "nombre": "Extra Queso",
-                    "precio": 1.50,
-                    "descripcion": "Queso adicional"
+                    "nombre": "Extra Cheddar",
+                    "precio": 300,
+                    "descripcion": ""
+                },
+                {
+                    "nombre": "Panceta",
+                    "precio": 600,
+                    "descripcion": ""
                 }
             ],
             "imagenes": [
                 {
-                    "url": "http://example.com/new_pizza.jpg"
+                    "url": "https://fakeurl.com/imagen1"
                 }
             ]
         }
-        ```
 
-## Eliminar un producto [DELETE /menu/{id}]
+### Eliminar un producto por ID [DELETE]
 + Parameters
-    + id: 1 (required, integer) - ID del producto a eliminar
+    + id (number) - El ID del producto a eliminar.
+
 + Response 200 (application/json)
+
     + Body
-        ```json
+
         {
             "message": "Producto, agregados e imágenes eliminados"
         }
-        ```
+
 
 # Agregado [/agregados]
 
