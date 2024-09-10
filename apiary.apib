@@ -523,7 +523,7 @@ Este endpoint acepta un objeto de producto o una lista de objetos para crear uno
         }
         ```
 
-## Corregir Pedido [PUT /pedidos/{id}/corregir]
+## Forzar Corregir Pedido [PUT /pedidos/{id}/corregir-forzado]
 + Parameters
     + id: 1 (required, integer) - ID del pedido
 + Request (application/json)
@@ -566,6 +566,48 @@ Este endpoint acepta un objeto de producto o una lista de objetos para crear uno
         }
         ```
 
+## Corregir Pedido [PUT /pedidos/{id}/corregir]
++ Parameters
+    + id: 1 (required, integer) - ID del pedido
++ Request (application/json)
+    + Body
+        ```json
+        {
+            "id_menu": 2,
+            "id_agregado": 3,
+            "cantidad": 2
+        }
+        ```
++ Response 200 (application/json)
+    + Body
+        ```json
+        {
+            "message": "Pedido corregido con éxito",
+            "pedido": {
+                "id": 1,
+                "id_menu": 2,
+                "id_agregado": 3,
+                "cantidad": 2,
+                "solicitado": "2024-09-08T12:00:00Z",
+                "entregado": false,
+                "hentrega": null
+            }
+        }
+        ```
++ Response 403 (application/json)
+    + Body
+        ```json
+        {
+            "message": "El tiempo para corregir el pedido ha expirado"
+        }
+        ```
++ Response 400 (application/json)
+    + Body
+        ```json
+        {
+            "message": "No se puede corregir un pedido que ya ha sido entregado"
+        }
+        ```
 ## Eliminar Pedido [DELETE /pedidos/{id}]
 + Parameters
     + id: 1 (required, integer) - ID del pedido
