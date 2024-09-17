@@ -650,6 +650,144 @@ Este endpoint acepta un objeto de producto o una lista de objetos para crear uno
             "message": "No se puede eliminar un pedido que ya ha sido entregado"
         }
         ```
+        
+        
+        
+        
+FORMAT: 1A
+HOST: http://localhost:5000
+
+
+# Mozo [/mozocall]
+
+### Llamar al mozo [POST /mozocall]
+
++ Request (application/json)
+
+    + Body
+        ```json
+        {
+          "id_mesa": 5
+        }
+        ```
+
++ Response 201 (application/json)
+
+    + Body
+        ```json
+        {
+          "message": "El mozo ha sido llamado"
+        }
+        ```
+
++ Response 400 (application/json)
+
+    + Body
+        ```json
+        {
+          "message": "Número de mesa inválido"
+        }
+        ```
+
+### Obtener todas las llamadas [GET /mozocall]
+
++ Response 200 (application/json)
+
+    + Body
+        ```json
+        [
+          {
+            "id": 1,
+            "solicitado": "2023-09-15T12:34:56",
+            "atendido": false,
+            "hentrega": null
+          },
+          {
+            "id": 2,
+            "solicitado": "2023-09-15T12:40:00",
+            "atendido": true,
+            "hentrega": "2023-09-15T12:45:00"
+          }
+        ]
+        ```
+
+### Obtener una llamada específica [GET /mozocall/{id}]
+
++ Parameters
+    + id: 1 (number, required) - El ID de la llamada al mozo
+
++ Response 200 (application/json)
+
+    + Body
+        ```json
+        {
+          "id": 1,
+          "solicitado": "2023-09-15T12:34:56",
+          "atendido": false,
+          "hentrega": null
+        }
+        ```
+
++ Response 404 (application/json)
+
+    + Body
+        ```json
+        {
+          "message": "Llamada no encontrada"
+        }
+        ```
+
+### Marcar llamada como atendida [PUT /mozocall/{id}/entregar]
+
++ Parameters
+    + id: 1 (number, required) - El ID de la llamada al mozo
+
++ Response 200 (application/json)
+
+    + Body
+        ```json
+        {
+          "message": "MozoCall marcado como atendido",
+          "mozoCall": {
+            "id": 1,
+            "atendido": true,
+            "hentrega": "2023-09-15T12:45:00"
+          }
+        }
+        ```
+
++ Response 400 (application/json)
+
+    + Body
+        ```json
+        {
+          "message": "El mozo ya atendió esta mesa"
+        }
+        ```
+
+### Eliminar una llamada [DELETE /mozocall/{id}]
+
++ Parameters
+    + id: 1 (number, required) - El ID de la llamada al mozo
+
++ Response 200 (application/json)
+
+    + Body
+        ```json
+        {
+          "message": "MozoCall eliminado con éxito"
+        }
+        ```
+
++ Response 400 (application/json)
+
+    + Body
+        ```json
+        {
+          "message": "No se puede eliminar un mozoCall que ya ha sido atendido"
+        }
+        ```
+
 
 # Autenticación [/auth]
 
